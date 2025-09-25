@@ -7,9 +7,11 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+
     public function run(): void
     {
-        // Admin seeder
+        // Create admin and dummy products
         $this->call(AdminUserSeeder::class);
+        $this->call(ProductSeeder::class);
     }
 }

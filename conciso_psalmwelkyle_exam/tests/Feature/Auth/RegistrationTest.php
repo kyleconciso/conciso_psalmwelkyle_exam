@@ -24,7 +24,6 @@ class RegistrationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        // UPDATED: Assert redirect to the welcome route
         $response->assertRedirect(route('welcome'));
     }
 }

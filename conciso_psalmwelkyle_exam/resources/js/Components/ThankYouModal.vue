@@ -27,7 +27,6 @@ const closeModal = () => {
                 </div>
 
                 <div class="mb-8 w-full">
-                    <!-- === ILLUSTRATION REPLACED HERE === -->
                     <img
                         src="/storage/images/shopper.png"
                         alt="Thank You Illustration"

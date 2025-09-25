@@ -3,17 +3,9 @@ import Modal from "@/Components/Modal.vue";
 import { useForm } from "@inertiajs/vue3";
 import { watch, computed } from "vue";
 
-const props = defineProps({
-    show: Boolean,
-    user: {
-        type: Object,
-        default: null,
-    },
-});
-
+const props = defineProps({ show: Boolean, user: Object });
 const emit = defineEmits(["close"]);
 const isEditing = computed(() => !!props.user);
-
 const form = useForm({
     name: "",
     email: "",
@@ -21,7 +13,6 @@ const form = useForm({
     password_confirmation: "",
     is_active: true,
 });
-
 watch(
     () => props.user,
     (newUser) => {
@@ -33,7 +24,6 @@ watch(
         form.clearErrors();
     }
 );
-
 const submit = () => {
     if (isEditing.value) {
         const data = form.data();
@@ -52,7 +42,6 @@ const submit = () => {
         });
     }
 };
-
 const closeModal = () => {
     emit("close");
 };
@@ -150,6 +139,9 @@ const closeModal = () => {
                             for="password"
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Password</label
+                        >
+                        <small v-if="isEditing" class="text-xs text-gray-500"
+                            >Leave blank to keep current password</small
                         >
                         <div class="relative mt-1">
                             <span

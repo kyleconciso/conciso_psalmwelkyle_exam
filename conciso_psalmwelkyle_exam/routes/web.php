@@ -7,17 +7,39 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 
 use App\Models\Product;
 
 
 // Welcome/products page
-Route::get('/', function () {
+Route::get('/', function (Request $request) { 
+    $productsQuery = Product::query();
+
+    //  Search
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $productsQuery->where('name', 'LIKE', "%{$search}%");
+    }
+
+    // Sortings
+    if ($request->input('sort') === 'price_asc') {
+        $productsQuery->orderBy('price', 'asc');
+    } else if ($request->input('sort') === 'price_desc') {
+        $productsQuery->orderBy('price', 'desc');
+    } else {
+        $productsQuery->latest(); // Default sort
+    }
+
+    $products = $productsQuery->paginate(8)->withQueryString();
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'products' => Product::latest()->get(),
+        'products' => $products,
+        'filters' => $request->only(['search', 'sort']),
     ]);
 })->name('welcome');
 
@@ -45,7 +67,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // <-- ADD THIS
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
 

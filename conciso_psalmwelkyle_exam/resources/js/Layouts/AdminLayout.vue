@@ -5,9 +5,8 @@ import UsersIcon from "@/Components/Icons/UsersIcon.vue";
 </script>
 
 <template>
-    <div class="flex h-screen bg-[#8B3F93]/15 font-sans">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white m-4 rounded-xl flex flex-col shadow-lg">
+    <div class="min-h-screen bg-[#8B3F93]/15 font-sans">
+        <aside class="w-70 bg-white flex flex-col shadow-lg fixed h-full">
             <div class="p-6">
                 <img
                     src="/storage/images/logo.png"
@@ -91,7 +90,7 @@ import UsersIcon from "@/Components/Icons/UsersIcon.vue";
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1 a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                             />
                         </svg>
                     </Link>
@@ -99,7 +98,7 @@ import UsersIcon from "@/Components/Icons/UsersIcon.vue";
             </div>
         </aside>
 
-        <main class="flex-1 p-4 pr-8 pt-8 flex flex-col">
+        <main class="flex-1 p-8 flex flex-col ml-64 overflow-y-auto">
             <slot />
         </main>
     </div>

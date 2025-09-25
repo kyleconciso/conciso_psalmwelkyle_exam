@@ -8,7 +8,6 @@ const form = useForm({
     password: "",
     password_confirmation: "",
 });
-
 const submit = () => {
     form.post(route("register"), {
         onFinish: () => form.reset("password", "password_confirmation"),
@@ -58,11 +57,8 @@ const submit = () => {
                                 autocomplete="name"
                                 class="w-full pl-10 px-3 py-3 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
                             />
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.name"
-                            />
                         </div>
+                        <InputError class="mt-1" :message="form.errors.name" />
                     </div>
                     <div>
                         <label
@@ -88,11 +84,8 @@ const submit = () => {
                                 autocomplete="username"
                                 class="w-full pl-10 px-3 py-3 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
                             />
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.email"
-                            />
                         </div>
+                        <InputError class="mt-1" :message="form.errors.email" />
                     </div>
                     <div>
                         <label
@@ -118,11 +111,11 @@ const submit = () => {
                                 autocomplete="new-password"
                                 class="w-full pl-10 px-3 py-3 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
                             />
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.password"
-                            />
                         </div>
+                        <InputError
+                            class="mt-1"
+                            :message="form.errors.password"
+                        />
                     </div>
                     <div>
                         <label
@@ -148,11 +141,11 @@ const submit = () => {
                                 autocomplete="new-password"
                                 class="w-full pl-10 px-3 py-3 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
                             />
-                            <InputError
-                                class="mt-2"
-                                :message="form.errors.password_confirmation"
-                            />
                         </div>
+                        <InputError
+                            class="mt-1"
+                            :message="form.errors.password_confirmation"
+                        />
                     </div>
                 </div>
 

@@ -45,7 +45,7 @@ const statusClasses = computed(() => {
         >
             <h2 class="text-2xl font-bold text-[#8B3F93]">Orders</h2>
 
-            <!-- for consistent sizing purposes -->
+            <!-- For consistent sizing purposes -->
             <div class="invisible">
                 <button
                     class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full"

@@ -1,19 +1,46 @@
 <script setup>
 import { Head, Link, router } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { cart } from "@/cart.js";
 import CartModal from "@/Components/CartModal.vue";
-import ThankYouModal from "@/Components/ThankYouModal.vue"; // <-- Import Thank You Modal
+import ThankYouModal from "@/Components/ThankYouModal.vue";
+import Pagination from "@/Components/Pagination.vue"; // The new pagination component
+import { debounce } from "lodash"; // A utility to delay function execution
 
 const props = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
-    products: Array,
+    products: Object, // Products is now a paginator object { data, links, ... }
     auth: Object,
+    filters: Object, // The current search/sort filters from the backend
 });
 
 const showCart = ref(false);
-const showThankYou = ref(false); // <-- State for Thank You Modal
+const showThankYou = ref(false);
+
+// Reactive refs bound to the form inputs. Initialized with values from the backend.
+const searchTerm = ref(props.filters.search || "");
+const sortOrder = ref(props.filters.sort || "latest");
+
+// This watches for any changes to our search or sort refs.
+// When they change, it sends a GET request to the backend with the new values.
+// `debounce` prevents sending a request on every single keystroke.
+watch(
+    [searchTerm, sortOrder],
+    debounce(() => {
+        router.get(
+            route("welcome"),
+            {
+                search: searchTerm.value,
+                sort: sortOrder.value,
+            },
+            {
+                preserveState: true, // Prevents losing focus on the search input
+                replace: true, // Avoids polluting browser history
+            }
+        );
+    }, 300)
+); // 300ms delay
 
 const addToCart = (product) => {
     if (!props.auth.user) {
@@ -83,7 +110,6 @@ const handleOrderPlaced = () => {
                                     }}
                                 </span>
                             </button>
-
                             <div class="flex items-center space-x-2">
                                 <img
                                     src="https://placehold.co/32x32/E2E8F0/4A5568?text=U"
@@ -111,7 +137,6 @@ const handleOrderPlaced = () => {
                                 </div>
                             </div>
                         </div>
-
                         <template v-else>
                             <Link
                                 :href="route('login')"
@@ -146,8 +171,9 @@ const handleOrderPlaced = () => {
                     <div class="flex justify-between items-center mb-6">
                         <div class="relative w-full max-w-xs">
                             <input
+                                v-model="searchTerm"
                                 type="text"
-                                placeholder="Search"
+                                placeholder="Search products..."
                                 class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8B3F93] focus:border-transparent"
                             />
                             <div
@@ -171,12 +197,26 @@ const handleOrderPlaced = () => {
                             class="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg"
                         >
                             <button
-                                class="bg-[#8B3F93] text-white font-semibold py-1.5 px-4 rounded-md text-sm"
+                                @click="sortOrder = 'price_asc'"
+                                :class="{
+                                    'bg-[#8B3F93] text-white':
+                                        sortOrder === 'price_asc',
+                                    'text-gray-600 hover:bg-gray-200':
+                                        sortOrder !== 'price_asc',
+                                }"
+                                class="font-semibold py-1.5 px-4 rounded-md text-sm transition"
                             >
                                 Price ascending
                             </button>
                             <button
-                                class="text-gray-600 font-semibold py-1.5 px-4 rounded-md text-sm hover:bg-gray-200"
+                                @click="sortOrder = 'price_desc'"
+                                :class="{
+                                    'bg-[#8B3F93] text-white':
+                                        sortOrder === 'price_desc',
+                                    'text-gray-600 hover:bg-gray-200':
+                                        sortOrder !== 'price_desc',
+                                }"
+                                class="font-semibold py-1.5 px-4 rounded-md text-sm transition"
                             >
                                 Price descending
                             </button>
@@ -184,11 +224,11 @@ const handleOrderPlaced = () => {
                     </div>
 
                     <div
-                        v-if="products.length > 0"
+                        v-if="products.data.length > 0"
                         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
                     >
                         <div
-                            v-for="product in products"
+                            v-for="product in products.data"
                             :key="product.id"
                             class="bg-white border border-gray-200 rounded-lg p-4 text-left flex flex-col"
                         >
@@ -234,75 +274,10 @@ const handleOrderPlaced = () => {
                         </div>
                     </div>
                     <div v-else class="text-center text-gray-500 py-8">
-                        No products available at the moment.
+                        No products found matching your search.
                     </div>
 
-                    <div
-                        class="mt-8 flex justify-center items-center space-x-2 text-sm"
-                    >
-                        <a
-                            href="#"
-                            class="flex items-center space-x-1 text-gray-500 hover:text-gray-800"
-                            ><svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-4 w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M15 19l-7-7 7-7"
-                                /></svg
-                            ><span>Previous</span></a
-                        >
-                        <a
-                            href="#"
-                            class="px-3 py-1 rounded-md bg-[#8B3F93] text-white font-semibold"
-                            >1</a
-                        >
-                        <a
-                            href="#"
-                            class="px-3 py-1 rounded-md text-gray-600 hover:bg-gray-100"
-                            >2</a
-                        >
-                        <a
-                            href="#"
-                            class="px-3 py-1 rounded-md text-gray-600 hover:bg-gray-100"
-                            >3</a
-                        >
-                        <span class="text-gray-500">...</span>
-                        <a
-                            href="#"
-                            class="px-3 py-1 rounded-md text-gray-600 hover:bg-gray-100"
-                            >67</a
-                        >
-                        <a
-                            href="#"
-                            class="px-3 py-1 rounded-md text-gray-600 hover:bg-gray-100"
-                            >68</a
-                        >
-                        <a
-                            href="#"
-                            class="flex items-center space-x-1 text-gray-500 hover:text-gray-800"
-                            ><span>Next</span
-                            ><svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="h-4 w-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 5l7 7-7 7"
-                                /></svg
-                        ></a>
-                    </div>
+                    <Pagination :links="products.links" />
                 </div>
             </main>
 
@@ -320,7 +295,6 @@ const handleOrderPlaced = () => {
             </footer>
         </div>
 
-        <!-- MODALS -->
         <CartModal
             :show="showCart"
             @close="showCart = false"
