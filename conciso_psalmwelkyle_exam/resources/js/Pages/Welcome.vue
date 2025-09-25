@@ -15,11 +15,7 @@ defineProps({
             <!-- Header -->
             <header class="py-4 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <img
-                        src="https://placehold.co/160x40/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
-                        alt="PurpleBug Logo"
-                        class="h-10"
-                    />
+                    <img src="" alt="PurpleBug Logo" class="h-10" />
                     <div v-if="canLogin" class="flex items-center space-x-6">
                         <!-- Logged-in User State -->
                         <div
@@ -274,11 +270,7 @@ defineProps({
             <!-- Footer -->
             <footer class="py-6 mt-8 border-t border-gray-200">
                 <div class="flex flex-col items-center">
-                    <img
-                        src="https://placehold.co/120x30/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
-                        alt="PurpleBug Logo"
-                        class="h-8"
-                    />
+                    <img src="" alt="PurpleBug Logo" class="h-8" />
                     <p class="text-xs text-gray-500 mt-2">
                         Copyright 2025 PurpleBug Inc.
                     </p>

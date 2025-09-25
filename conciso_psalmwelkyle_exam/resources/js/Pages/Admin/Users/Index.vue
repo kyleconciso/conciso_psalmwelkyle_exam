@@ -1,18 +1,32 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3"; // <--- CORRECT import for actions
+import { router } from "@inertiajs/vue3";
+import { ref } from "vue";
+import CreateUserModal from "./Partials/CreateUserModal.vue";
+import EditUserModal from "./Partials/EditUserModal.vue";
 
 defineProps({
     users: Array,
 });
 
-// Simple delete confirmation
-const deactivateUser = (user) => {
-    if (confirm(`Are you sure you want to deactivate ${user.name}?`)) {
-        // Use router.delete for the action
+const showingCreateUserModal = ref(false);
+const showingEditUserModal = ref(false);
+const selectedUser = ref(null);
+
+const openEditModal = (user) => {
+    selectedUser.value = user;
+    showingEditUserModal.value = true;
+};
+
+const deleteUser = (user) => {
+    if (
+        confirm(
+            `Are you sure you want to PERMANENTLY DELETE ${user.name}? This cannot be undone.`
+        )
+    ) {
         router.delete(route("admin.users.destroy", user.id), {
-            preserveScroll: true, // This prevents the page from jumping to the top
+            preserveScroll: true,
         });
     }
 };
@@ -28,6 +42,7 @@ const deactivateUser = (user) => {
         >
             <h2 class="text-2xl font-bold text-[#8B3F93]">Users Management</h2>
             <button
+                @click="showingCreateUserModal = true"
                 class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition duration-300"
             >
                 Add User
@@ -37,7 +52,7 @@ const deactivateUser = (user) => {
         <!-- Users Table -->
         <div class="flex-1 bg-transparent space-y-4">
             <div
-                class="bg-[#8B3F93] text-white grid grid-cols-12 gap-4 py-5 px-4 rounded-xl font-bold"
+                class="bg-[#8B3F93] text-white grid grid-cols-12 gap-4 py-5 px-4 rounded-xl font-bold items-center"
             >
                 <div class="col-span-4">Full Name</div>
                 <div class="col-span-4">Email</div>
@@ -45,7 +60,6 @@ const deactivateUser = (user) => {
                 <div class="col-span-2 text-center">Action</div>
             </div>
 
-            <!-- Loop through users -->
             <div
                 v-if="users.length > 0"
                 v-for="user in users"
@@ -57,7 +71,6 @@ const deactivateUser = (user) => {
                 </div>
                 <div class="col-span-4 text-gray-600">{{ user.email }}</div>
                 <div class="col-span-2">
-                    <!-- Conditional Status Badge -->
                     <span
                         v-if="user.is_active"
                         class="text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full bg-[#55B36A]"
@@ -72,7 +85,10 @@ const deactivateUser = (user) => {
                 <div
                     class="col-span-2 flex items-center space-x-4 justify-center"
                 >
-                    <button class="text-gray-500 hover:text-blue-500">
+                    <button
+                        @click="openEditModal(user)"
+                        class="text-gray-500 hover:text-blue-500"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5"
@@ -89,10 +105,9 @@ const deactivateUser = (user) => {
                             />
                         </svg>
                     </button>
-                    <!-- Deactivate/Delete Button (only for non-admin users) -->
                     <button
                         v-if="user.role !== 'Admin'"
-                        @click="deactivateUser(user)"
+                        @click="deleteUser(user)"
                         class="text-gray-500 hover:text-red-500"
                     >
                         <svg
@@ -118,4 +133,14 @@ const deactivateUser = (user) => {
             </div>
         </div>
     </AdminLayout>
+
+    <CreateUserModal
+        :show="showingCreateUserModal"
+        @close="showingCreateUserModal = false"
+    />
+    <EditUserModal
+        :show="showingEditUserModal"
+        :user="selectedUser"
+        @close="showingEditUserModal = false"
+    />
 </template>

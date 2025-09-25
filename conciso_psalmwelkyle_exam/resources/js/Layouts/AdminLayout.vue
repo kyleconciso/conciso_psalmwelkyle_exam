@@ -1,15 +1,11 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
-
-const props = defineProps({
-    title: String,
-});
 </script>
 
 <template>
-    <!-- REMOVED background color from here -->
-    <div class="flex h-screen bg-gray-100 font-sans">
-        <!-- Sidebar -->
+    <!-- Set the entire screen background to the light purple tint -->
+    <div class="flex h-screen bg-[#8B3F93]/15 font-sans">
+        <!-- Sidebar: Has a white background and margin -->
         <aside class="w-64 bg-white m-4 rounded-xl flex flex-col shadow-lg">
             <div class="p-6">
                 <img
@@ -23,7 +19,7 @@ const props = defineProps({
             <nav class="flex-1 px-4 py-2 space-y-2 mt-4">
                 <Link
                     href="#"
-                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-[#8B3F93]/10 rounded-lg"
+                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
                             route().current('admin.products.*'),
@@ -47,7 +43,7 @@ const props = defineProps({
                 </Link>
                 <Link
                     href="#"
-                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-[#8B3F93]/10 rounded-lg"
+                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
                             route().current('admin.orders.*'),
@@ -71,7 +67,7 @@ const props = defineProps({
                 </Link>
                 <Link
                     :href="route('admin.users.index')"
-                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-[#8B3F93]/10 rounded-lg"
+                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
                             route().current('admin.users.index'),
@@ -148,9 +144,8 @@ const props = defineProps({
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <!-- ADDED background color here -->
-        <main class="flex-1 p-4 pr-8 pt-8 flex flex-col bg-[#8B3F93]/15">
+        <!-- Main Content: This area has no background, it is transparent, letting the root div's color show through -->
+        <main class="flex-1 p-4 pr-8 pt-8 flex flex-col">
             <slot />
         </main>
     </div>
