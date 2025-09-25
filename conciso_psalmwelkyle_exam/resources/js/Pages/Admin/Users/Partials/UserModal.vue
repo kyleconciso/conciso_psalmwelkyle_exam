@@ -12,7 +12,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close"]);
-
 const isEditing = computed(() => !!props.user);
 
 const form = useForm({
@@ -62,7 +61,6 @@ const closeModal = () => {
 <template>
     <Modal :show="show" max-width="2xl" @close="closeModal">
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <!-- Header -->
             <div class="bg-[#8B3F93] p-4 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-white">
                     {{ isEditing ? "Edit User" : "Add User" }}
@@ -84,22 +82,31 @@ const closeModal = () => {
                 </div>
             </div>
 
-            <!-- Form Content -->
             <form @submit.prevent="submit" class="p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <!-- Full Name -->
                     <div>
                         <label
                             for="name"
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Full Name</label
                         >
-                        <input
-                            v-model="form.name"
-                            type="text"
-                            id="name"
-                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
-                        />
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3"
+                            >
+                                <img
+                                    src="/storage/images/user.svg"
+                                    class="h-5 w-5 text-gray-400"
+                                    alt="User icon"
+                                />
+                            </span>
+                            <input
+                                v-model="form.name"
+                                type="text"
+                                id="name"
+                                class="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
+                            />
+                        </div>
                         <div
                             v-if="form.errors.name"
                             class="text-sm text-red-600 mt-1"
@@ -107,19 +114,29 @@ const closeModal = () => {
                             {{ form.errors.name }}
                         </div>
                     </div>
-                    <!-- Email -->
                     <div>
                         <label
                             for="email"
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Email</label
                         >
-                        <input
-                            v-model="form.email"
-                            type="email"
-                            id="email"
-                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
-                        />
+                        <div class="relative">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3"
+                            >
+                                <img
+                                    src="/storage/images/email.svg"
+                                    class="h-5 w-5 text-gray-400"
+                                    alt="Email icon"
+                                />
+                            </span>
+                            <input
+                                v-model="form.email"
+                                type="email"
+                                id="email"
+                                class="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
+                            />
+                        </div>
                         <div
                             v-if="form.errors.email"
                             class="text-sm text-red-600 mt-1"
@@ -128,19 +145,29 @@ const closeModal = () => {
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div>
                         <label
                             for="password"
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Password</label
                         >
-                        <input
-                            v-model="form.password"
-                            type="password"
-                            id="password"
-                            class="mt-1 w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
-                        />
+                        <div class="relative mt-1">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3"
+                            >
+                                <img
+                                    src="/storage/images/password.svg"
+                                    class="h-5 w-5 text-gray-400"
+                                    alt="Password icon"
+                                />
+                            </span>
+                            <input
+                                v-model="form.password"
+                                type="password"
+                                id="password"
+                                class="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
+                            />
+                        </div>
                         <div
                             v-if="form.errors.password"
                             class="text-sm text-red-600 mt-1"
@@ -149,22 +176,31 @@ const closeModal = () => {
                         </div>
                     </div>
 
-                    <!-- Confirm Password-->
                     <div v-if="!isEditing || form.password">
                         <label
                             for="confirm-password"
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Confirm Password</label
                         >
-                        <input
-                            v-model="form.password_confirmation"
-                            type="password"
-                            id="confirm-password"
-                            class="mt-1 w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
-                        />
+                        <div class="relative mt-1">
+                            <span
+                                class="absolute inset-y-0 left-0 flex items-center pl-3"
+                            >
+                                <img
+                                    src="/storage/images/password.svg"
+                                    class="h-5 w-5 text-gray-400"
+                                    alt="Password icon"
+                                />
+                            </span>
+                            <input
+                                v-model="form.password_confirmation"
+                                type="password"
+                                id="confirm-password"
+                                class="w-full pl-10 pr-3 py-2 border border-gray-400 rounded-md focus:ring-1 focus:ring-[#8B3F93] focus:border-[#8B3F93]"
+                            />
+                        </div>
                     </div>
 
-                    <!-- Status -->
                     <div v-if="isEditing">
                         <label
                             for="status"

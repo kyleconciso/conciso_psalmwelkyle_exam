@@ -7,7 +7,7 @@ defineProps({
     show: Boolean,
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "order-placed"]); // <-- Added 'order-placed'
 
 const form = useForm({});
 
@@ -21,7 +21,7 @@ const placeOrder = () => {
         onSuccess: () => {
             cart.clear();
             closeModal();
-            alert("Thank you for your order!");
+            emit("order-placed"); // <-- EMIT THE EVENT
         },
     });
 };
@@ -33,6 +33,7 @@ const closeModal = () => {
 
 <template>
     <Modal :show="show" max-width="2xl" @close="closeModal">
+        <!-- ... (rest of the cart modal template is unchanged) ... -->
         <div class="w-full bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="p-6">
                 <div class="flex justify-between items-center pb-4">
@@ -55,7 +56,7 @@ const closeModal = () => {
                     <button
                         @click="placeOrder"
                         :disabled="form.processing || cart.items.length === 0"
-                        class="bg-[#8B3F93] text-white font-semibold py-2 px-6 rounded-lg hover:bg-opacity-90 transition"
+                        class="bg-[#8B3F93] text-white font-semibold py-2 px-6 rounded-lg hover:bg-opacity-90 transition disabled:bg-gray-400"
                     >
                         PLACE ORDER
                     </button>
