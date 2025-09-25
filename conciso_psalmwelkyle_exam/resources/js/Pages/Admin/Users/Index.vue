@@ -3,14 +3,14 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head } from "@inertiajs/vue3";
 import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
-import UserModal from "./Partials/UserModal.vue"; // <-- Import the single modal
+import UserModal from "./Partials/UserModal.vue";
 
 defineProps({
     users: Array,
 });
 
 const showUserModal = ref(false);
-const selectedUser = ref(null); // This will be null for 'create', and an object for 'edit'
+const selectedUser = ref(null);
 
 const openModal = (user = null) => {
     selectedUser.value = user;

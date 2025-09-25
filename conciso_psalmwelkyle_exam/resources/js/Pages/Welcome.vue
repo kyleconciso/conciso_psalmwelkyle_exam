@@ -1,10 +1,25 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
+import { ref } from "vue";
+import { cart } from "@/cart.js";
+import CartModal from "@/Components/CartModal.vue";
 
-defineProps({
+const props = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
+    products: Array,
+    auth: Object,
 });
+
+const showCart = ref(false);
+
+const addToCart = (product) => {
+    if (!props.auth.user) {
+        router.get(route("login"));
+        return;
+    }
+    cart.addItem(product);
+};
 </script>
 
 <template>
@@ -15,15 +30,22 @@ defineProps({
             <!-- Header -->
             <header class="py-4 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <img src="" alt="PurpleBug Logo" class="h-10" />
+                    <img
+                        src="https://placehold.co/160x40/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
+                        alt="PurpleBug Logo"
+                        class="h-10"
+                    />
                     <div v-if="canLogin" class="flex items-center space-x-6">
                         <!-- Logged-in User State -->
                         <div
-                            v-if="$page.props.auth.user"
+                            v-if="auth.user"
                             class="flex items-center space-x-4"
                         >
                             <!-- Cart Icon -->
-                            <button class="text-gray-600 hover:text-[#8B3F93]">
+                            <button
+                                @click="showCart = true"
+                                class="relative text-gray-600 hover:text-[#8B3F93]"
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     class="h-6 w-6"
@@ -38,6 +60,17 @@ defineProps({
                                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                                     />
                                 </svg>
+                                <span
+                                    v-if="cart.items.length > 0"
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                >
+                                    {{
+                                        cart.items.reduce(
+                                            (acc, item) => acc + item.quantity,
+                                            0
+                                        )
+                                    }}
+                                </span>
                             </button>
 
                             <div class="flex items-center space-x-2">
@@ -48,18 +81,10 @@ defineProps({
                                 />
                                 <div>
                                     <p class="text-sm font-medium">
-                                        Hi,
-                                        {{
-                                            $page.props.auth.user.name.split(
-                                                " "
-                                            )[0]
-                                        }}!
+                                        Hi, {{ auth.user.name.split(" ")[0] }}!
                                     </p>
                                     <Link
-                                        v-if="
-                                            $page.props.auth.user.role ===
-                                            'Admin'
-                                        "
+                                        v-if="auth.user.role === 'Admin'"
                                         :href="route('admin.dashboard')"
                                         class="text-xs text-blue-500 hover:underline"
                                         >Go to CMS</Link
@@ -76,7 +101,7 @@ defineProps({
                             </div>
                         </div>
 
-                        <!-- Guest (Not Logged-in) State -->
+                        <!-- Guest-->
                         <template v-else>
                             <Link
                                 :href="route('login')"
@@ -164,13 +189,13 @@ defineProps({
 
                     <!-- Products Grid -->
                     <div
+                        v-if="products.length > 0"
                         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
                     >
-                        <!-- Product Card (Repeated for demo) -->
                         <div
-                            v-for="i in 8"
-                            :key="i"
-                            class="bg-white border border-gray-200 rounded-lg p-4 text-left"
+                            v-for="product in products"
+                            :key="product.id"
+                            class="bg-white border border-gray-200 rounded-lg p-4 text-left flex flex-col"
                         >
                             <div
                                 class="bg-gray-200 w-full h-48 rounded-md flex items-center justify-center mb-4"
@@ -191,10 +216,30 @@ defineProps({
                                 </svg>
                             </div>
                             <p class="text-sm text-gray-500">
-                                Product Name {{ i }}
+                                {{ product.name }}
                             </p>
-                            <p class="font-bold">P 100.00</p>
+                            <p class="font-bold">P {{ product.price }}</p>
+                            <p class="text-xs text-gray-400">
+                                Stock: {{ product.stock }}
+                            </p>
+
+                            <div class="mt-auto pt-4">
+                                <button
+                                    @click="addToCart(product)"
+                                    :disabled="product.stock === 0"
+                                    class="w-full bg-[#8B3F93] text-white font-semibold py-2 rounded-lg hover:bg-opacity-90 transition text-sm disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                >
+                                    {{
+                                        product.stock > 0
+                                            ? "Add to Cart"
+                                            : "Out of Stock"
+                                    }}
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                    <div v-else class="text-center text-gray-500 py-8">
+                        No products available at the moment.
                     </div>
 
                     <!-- Pagination -->
@@ -270,12 +315,18 @@ defineProps({
             <!-- Footer -->
             <footer class="py-6 mt-8 border-t border-gray-200">
                 <div class="flex flex-col items-center">
-                    <img src="" alt="PurpleBug Logo" class="h-8" />
+                    <img
+                        src="https://placehold.co/120x30/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
+                        alt="PurpleBug Logo"
+                        class="h-8"
+                    />
                     <p class="text-xs text-gray-500 mt-2">
                         Copyright 2025 PurpleBug Inc.
                     </p>
                 </div>
             </footer>
         </div>
+
+        <CartModal :show="showCart" @close="showCart = false" />
     </div>
 </template>
