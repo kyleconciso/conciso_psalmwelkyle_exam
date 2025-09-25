@@ -1,10 +1,21 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import { router } from "@inertiajs/vue3"; // <--- CORRECT import for actions
 
 defineProps({
     users: Array,
 });
+
+// Simple delete confirmation
+const deactivateUser = (user) => {
+    if (confirm(`Are you sure you want to deactivate ${user.name}?`)) {
+        // Use router.delete for the action
+        router.delete(route("admin.users.destroy", user.id), {
+            preserveScroll: true, // This prevents the page from jumping to the top
+        });
+    }
+};
 </script>
 
 <template>
@@ -36,6 +47,7 @@ defineProps({
 
             <!-- Loop through users -->
             <div
+                v-if="users.length > 0"
                 v-for="user in users"
                 :key="user.id"
                 class="bg-white p-4 rounded-xl shadow-lg grid grid-cols-12 gap-4 items-center"
@@ -45,11 +57,17 @@ defineProps({
                 </div>
                 <div class="col-span-4 text-gray-600">{{ user.email }}</div>
                 <div class="col-span-2">
+                    <!-- Conditional Status Badge -->
                     <span
+                        v-if="user.is_active"
                         class="text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full bg-[#55B36A]"
                         >Active</span
                     >
-                    <!-- We will add logic for inactive status later -->
+                    <span
+                        v-else
+                        class="text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full bg-[#C73B3B]"
+                        >Inactive</span
+                    >
                 </div>
                 <div
                     class="col-span-2 flex items-center space-x-4 justify-center"
@@ -71,7 +89,12 @@ defineProps({
                             />
                         </svg>
                     </button>
-                    <button class="text-gray-500 hover:text-red-500">
+                    <!-- Deactivate/Delete Button (only for non-admin users) -->
+                    <button
+                        v-if="user.role !== 'Admin'"
+                        @click="deactivateUser(user)"
+                        class="text-gray-500 hover:text-red-500"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5"
@@ -86,6 +109,12 @@ defineProps({
                         </svg>
                     </button>
                 </div>
+            </div>
+            <div
+                v-else
+                class="bg-white p-4 rounded-xl shadow-lg text-center text-gray-500"
+            >
+                No guest users found.
             </div>
         </div>
     </AdminLayout>
