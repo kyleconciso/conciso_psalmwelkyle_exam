@@ -18,7 +18,7 @@ import { Link } from "@inertiajs/vue3";
 
             <nav class="flex-1 px-4 py-2 space-y-2 mt-4">
                 <Link
-                    href="#"
+                    :href="route('admin.products.index')"
                     class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':

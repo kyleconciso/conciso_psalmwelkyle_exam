@@ -1,96 +1,76 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { Head } from "@inertiajs/vue3";
-import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
-import UserModal from "./Partials/UserModal.vue"; // <-- Import the single modal
+import { router } from "@inertiajs/vue3";
+import ProductModal from "./Partials/ProductModal.vue";
 
 defineProps({
-    users: Array,
+    products: Array,
 });
 
-const showUserModal = ref(false);
-const selectedUser = ref(null); // This will be null for 'create', and an object for 'edit'
+const showProductModal = ref(false);
+const selectedProduct = ref(null);
 
-const openModal = (user = null) => {
-    selectedUser.value = user;
-    showUserModal.value = true;
+const openModal = (product = null) => {
+    selectedProduct.value = product;
+    showProductModal.value = true;
 };
 
-const deleteUser = (user) => {
-    if (
-        confirm(
-            `Are you sure you want to PERMANENTLY DELETE ${user.name}? This cannot be undone.`
-        )
-    ) {
-        router.delete(route("admin.users.destroy", user.id), {
-            preserveScroll: true,
-        });
+const deleteProduct = (product) => {
+    if (confirm(`Are you sure you want to delete ${product.name}?`)) {
+        router.delete(route("admin.products.destroy", product.id));
     }
 };
 </script>
 
 <template>
-    <Head title="Users Management" />
-
+    <Head title="Products Management" />
     <AdminLayout>
-        <!-- Header -->
         <div
             class="bg-white p-6 rounded-xl shadow-lg flex justify-between items-center mb-8"
         >
-            <h2 class="text-2xl font-bold text-[#8B3F93]">Users Management</h2>
-            <!-- Pass null to openModal for creating -->
+            <h2 class="text-2xl font-bold text-[#8B3F93]">
+                Products Management
+            </h2>
             <button
                 @click="openModal()"
-                class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition duration-300"
+                class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition"
             >
-                Add User
+                Add Product
             </button>
         </div>
 
-        <!-- Users Table -->
         <div class="flex-1 bg-transparent space-y-4">
             <div
                 class="bg-[#8B3F93] text-white grid grid-cols-12 gap-4 py-5 px-4 rounded-xl font-bold items-center"
             >
-                <div class="col-span-4">Full Name</div>
-                <div class="col-span-4">Email</div>
-                <div class="col-span-2">Status</div>
+                <div class="col-span-5">Product Name</div>
+                <div class="col-span-2">Price</div>
+                <div class="col-span-3">Number of Stocks</div>
                 <div class="col-span-2 text-center">Action</div>
             </div>
 
             <div
-                v-if="users.length > 0"
-                v-for="user in users"
-                :key="user.id"
+                v-for="product in products"
+                :key="product.id"
                 class="bg-white p-4 rounded-xl shadow-lg grid grid-cols-12 gap-4 items-center"
             >
-                <div class="col-span-4 font-medium text-gray-800">
-                    {{ user.name }}
+                <div class="col-span-5 font-medium text-gray-800">
+                    {{ product.name }}
                 </div>
-                <div class="col-span-4 text-gray-600">{{ user.email }}</div>
-                <div class="col-span-2">
-                    <span
-                        v-if="user.is_active"
-                        class="text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full bg-[#55B36A]"
-                        >Active</span
-                    >
-                    <span
-                        v-else
-                        class="text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-full bg-[#C73B3B]"
-                        >Inactive</span
-                    >
+                <div class="col-span-2 text-gray-600">
+                    P {{ product.price }}
                 </div>
+                <div class="col-span-3 text-gray-600">{{ product.stock }}</div>
                 <div
                     class="col-span-2 flex items-center space-x-4 justify-center"
                 >
-                    <!-- Pass the user object to openModal for editing -->
                     <button
-                        @click="openModal(user)"
+                        @click="openModal(product)"
                         class="text-gray-500 hover:text-blue-500"
                     >
                         <svg
-                            xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -106,12 +86,10 @@ const deleteUser = (user) => {
                         </svg>
                     </button>
                     <button
-                        v-if="user.role !== 'Admin'"
-                        @click="deleteUser(user)"
+                        @click="deleteProduct(product)"
                         class="text-gray-500 hover:text-red-500"
                     >
                         <svg
-                            xmlns="http://www.w3.org/2000/svg"
                             class="h-5 w-5"
                             viewBox="0 0 20 20"
                             fill="currentColor"
@@ -125,19 +103,19 @@ const deleteUser = (user) => {
                     </button>
                 </div>
             </div>
+
             <div
-                v-else
+                v-if="!products.length"
                 class="bg-white p-4 rounded-xl shadow-lg text-center text-gray-500"
             >
-                No guest users found.
+                No products found. Click "Add Product" to create one.
             </div>
         </div>
     </AdminLayout>
 
-    <!-- Use the single, reusable modal -->
-    <UserModal
-        :show="showUserModal"
-        :user="selectedUser"
-        @close="showUserModal = false"
+    <ProductModal
+        :show="showProductModal"
+        :product="selectedProduct"
+        @close="showProductModal = false"
     />
 </template>

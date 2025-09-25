@@ -16,7 +16,6 @@ const form = useForm({
     is_active: true,
 });
 
-// When the user prop changes (when the modal is opened), fill the form
 watch(
     () => props.user,
     (newUser) => {
