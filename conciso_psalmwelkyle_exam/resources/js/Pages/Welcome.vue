@@ -3,6 +3,7 @@ import { Head, Link, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { cart } from "@/cart.js";
 import CartModal from "@/Components/CartModal.vue";
+import ThankYouModal from "@/Components/ThankYouModal.vue"; // <-- Import Thank You Modal
 
 const props = defineProps({
     canLogin: Boolean,
@@ -12,6 +13,7 @@ const props = defineProps({
 });
 
 const showCart = ref(false);
+const showThankYou = ref(false); // <-- State for Thank You Modal
 
 const addToCart = (product) => {
     if (!props.auth.user) {
@@ -20,6 +22,10 @@ const addToCart = (product) => {
     }
     cart.addItem(product);
 };
+
+const handleOrderPlaced = () => {
+    showThankYou.value = true;
+};
 </script>
 
 <template>
@@ -27,16 +33,16 @@ const addToCart = (product) => {
 
     <div class="text-gray-800 bg-gray-50 font-sans">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
             <header class="py-4 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <img
-                        src="https://placehold.co/160x40/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
-                        alt="PurpleBug Logo"
-                        class="h-10"
-                    />
+                    <Link :href="route('welcome')">
+                        <img
+                            src="/storage/images/logo.png"
+                            alt="PurpleBug Logo"
+                            class="h-10"
+                        />
+                    </Link>
                     <div v-if="canLogin" class="flex items-center space-x-6">
-                        <!-- Logged-in User State -->
                         <div
                             v-if="auth.user"
                             class="flex items-center space-x-4"
@@ -47,8 +53,6 @@ const addToCart = (product) => {
                             >
                                 My Orders
                             </Link>
-
-                            <!-- Cart Icon -->
                             <button
                                 @click="showCart = true"
                                 class="relative text-gray-600 hover:text-[#8B3F93]"
@@ -108,24 +112,16 @@ const addToCart = (product) => {
                             </div>
                         </div>
 
-                        <!-- Guest-->
                         <template v-else>
                             <Link
                                 :href="route('login')"
                                 class="flex items-center space-x-2 bg-[#8B3F93] text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
+                                <img
+                                    src="/storage/images/login.svg"
                                     class="h-5 w-5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
+                                    alt="Login icon"
+                                />
                                 <span>LOGIN</span>
                             </Link>
                             <Link
@@ -133,16 +129,11 @@ const addToCart = (product) => {
                                 :href="route('register')"
                                 class="bg-[#8B3F93] text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 hover:bg-opacity-90 transition"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
+                                <img
+                                    src="/storage/images/signup.svg"
                                     class="h-5 w-5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 11a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1v-1z"
-                                    />
-                                </svg>
+                                    alt="Sign Up icon"
+                                />
                                 <span>SIGN UP</span>
                             </Link>
                         </template>
@@ -150,10 +141,8 @@ const addToCart = (product) => {
                 </div>
             </header>
 
-            <!-- Main Content -->
             <main class="py-8">
                 <div class="bg-white p-6 rounded-lg shadow-sm">
-                    <!-- Search and Sort -->
                     <div class="flex justify-between items-center mb-6">
                         <div class="relative w-full max-w-xs">
                             <input
@@ -194,7 +183,6 @@ const addToCart = (product) => {
                         </div>
                     </div>
 
-                    <!-- Products Grid -->
                     <div
                         v-if="products.length > 0"
                         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
@@ -249,7 +237,6 @@ const addToCart = (product) => {
                         No products available at the moment.
                     </div>
 
-                    <!-- Pagination -->
                     <div
                         class="mt-8 flex justify-center items-center space-x-2 text-sm"
                     >
@@ -319,13 +306,12 @@ const addToCart = (product) => {
                 </div>
             </main>
 
-            <!-- Footer -->
             <footer class="py-6 mt-8 border-t border-gray-200">
                 <div class="flex flex-col items-center">
                     <img
-                        src="https://placehold.co/120x30/8B3F93/FFFFFF?text=PurpleBug%C2%AE"
+                        src="/storage/images/logo.png"
                         alt="PurpleBug Logo"
-                        class="h-8"
+                        class="h-8 opacity-75"
                     />
                     <p class="text-xs text-gray-500 mt-2">
                         Copyright 2025 PurpleBug Inc.
@@ -334,6 +320,12 @@ const addToCart = (product) => {
             </footer>
         </div>
 
-        <CartModal :show="showCart" @close="showCart = false" />
+        <!-- MODALS -->
+        <CartModal
+            :show="showCart"
+            @close="showCart = false"
+            @order-placed="handleOrderPlaced"
+        />
+        <ThankYouModal :show="showThankYou" @close="showThankYou = false" />
     </div>
 </template>

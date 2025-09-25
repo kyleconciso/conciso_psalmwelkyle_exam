@@ -1,13 +1,16 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
+import InboxIcon from "@/Components/Icons/InboxIcon.vue";
+import UsersIcon from "@/Components/Icons/UsersIcon.vue";
 </script>
 
 <template>
     <div class="flex h-screen bg-[#8B3F93]/15 font-sans">
+        <!-- Sidebar -->
         <aside class="w-64 bg-white m-4 rounded-xl flex flex-col shadow-lg">
             <div class="p-6">
                 <img
-                    src=""
+                    src="/storage/images/logo.png"
                     alt="PurpleBug Logo"
                     class="w-full h-10 object-contain"
                 />
@@ -20,71 +23,34 @@ import { Link } from "@inertiajs/vue3";
                     class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
-                            route().current('admin.products.*'),
+                            route().current('admin.products.index'),
                     }"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                        />
-                    </svg>
+                    <InboxIcon class="h-6 w-6 mr-3" />
                     <span class="font-medium">Products Management</span>
                 </Link>
+
                 <Link
                     :href="route('admin.orders.index')"
                     class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
-                            route().current('admin.orders.*'),
+                            route().current('admin.orders.index'),
                     }"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                        />
-                    </svg>
+                    <InboxIcon class="h-6 w-6 mr-3" />
                     <span class="font-medium">Orders</span>
                 </Link>
+
                 <Link
                     :href="route('admin.users.index')"
-                    class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    class="flex items-center px-4 py-3 text-gray-600 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
                             route().current('admin.users.index'),
                     }"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 mr-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197M15 21a6 6 0 006-6v-1a6 6 0 00-9-5.197"
-                        />
-                    </svg>
+                    <UsersIcon class="h-6 w-6 mr-3" />
                     <span class="font-medium">Users Management</span>
                 </Link>
             </nav>
@@ -93,22 +59,13 @@ import { Link } from "@inertiajs/vue3";
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div
-                            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
+                            <img
+                                src="/storage/images/user2.svg"
                                 class="h-6 w-6 text-gray-500"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                />
-                            </svg>
+                                alt="User Avatar"
+                            />
                         </div>
                         <span class="font-medium text-sm text-gray-700"
                             >Hi,

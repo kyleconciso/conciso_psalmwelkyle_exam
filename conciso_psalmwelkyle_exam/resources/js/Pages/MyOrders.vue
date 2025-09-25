@@ -26,7 +26,11 @@ const statusClasses = computed(() => {
             <header class="py-4 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <Link :href="route('welcome')">
-                        <img src="" alt="PurpleBug Logo" class="h-10" />
+                        <img
+                            src="/storage/images/logo.png"
+                            alt="PurpleBug Logo"
+                            class="h-10"
+                        />
                     </Link>
                     <div class="flex items-center space-x-2">
                         <img

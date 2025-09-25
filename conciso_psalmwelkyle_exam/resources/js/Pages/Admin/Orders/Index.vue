@@ -44,6 +44,15 @@ const statusClasses = computed(() => {
             class="bg-white p-6 rounded-xl shadow-lg flex justify-between items-center mb-8"
         >
             <h2 class="text-2xl font-bold text-[#8B3F93]">Orders</h2>
+
+            <!-- for consistent sizing purposes -->
+            <div class="invisible">
+                <button
+                    class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full"
+                >
+                    Placeholder
+                </button>
+            </div>
         </div>
 
         <div class="flex-1 bg-transparent space-y-4">
