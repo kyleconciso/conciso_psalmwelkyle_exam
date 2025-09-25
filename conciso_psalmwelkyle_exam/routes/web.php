@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/checkout', [CartController::class, 'store'])->name('cart.store');
+    Route::get('/my-orders', [CartController::class, 'index'])->name('my-orders.index');
 });
 
 // Admin CMS routes

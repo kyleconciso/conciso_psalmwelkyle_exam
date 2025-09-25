@@ -41,6 +41,13 @@ const addToCart = (product) => {
                             v-if="auth.user"
                             class="flex items-center space-x-4"
                         >
+                            <Link
+                                :href="route('my-orders.index')"
+                                class="text-sm font-medium text-gray-600 hover:text-[#8B3F93]"
+                            >
+                                My Orders
+                            </Link>
+
                             <!-- Cart Icon -->
                             <button
                                 @click="showCart = true"

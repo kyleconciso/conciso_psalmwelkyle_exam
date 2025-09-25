@@ -6,9 +6,22 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::id())
+            ->with('product')
+            ->latest()
+            ->get();
+        
+        return Inertia::render('MyOrders', [
+            'orders' => $orders
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
