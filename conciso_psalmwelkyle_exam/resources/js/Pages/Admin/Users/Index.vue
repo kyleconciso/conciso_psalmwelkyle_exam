@@ -34,12 +34,10 @@ const deleteUser = (user) => {
     <Head title="Users Management" />
 
     <AdminLayout>
-        <!-- Header -->
         <div
             class="bg-white p-6 rounded-xl shadow-lg flex justify-between items-center mb-8"
         >
             <h2 class="text-2xl font-bold text-[#8B3F93]">Users Management</h2>
-            <!-- Pass null to openModal for creating -->
             <button
                 @click="openModal()"
                 class="bg-[#65558F] text-white font-bold py-2 px-6 rounded-full hover:bg-opacity-90 transition duration-300"
@@ -48,7 +46,6 @@ const deleteUser = (user) => {
             </button>
         </div>
 
-        <!-- Users Table -->
         <div class="flex-1 bg-transparent space-y-4">
             <div
                 class="bg-[#8B3F93] text-white grid grid-cols-12 gap-4 py-5 px-4 rounded-xl font-bold items-center"
@@ -84,7 +81,6 @@ const deleteUser = (user) => {
                 <div
                     class="col-span-2 flex items-center space-x-4 justify-center"
                 >
-                    <!-- Pass the user object to openModal for editing -->
                     <button
                         @click="openModal(user)"
                         class="text-gray-500 hover:text-blue-500"
@@ -134,7 +130,6 @@ const deleteUser = (user) => {
         </div>
     </AdminLayout>
 
-    <!-- Use the single, reusable modal -->
     <UserModal
         :show="showUserModal"
         :user="selectedUser"

@@ -70,13 +70,11 @@ const maxWidthClass = computed(() => {
 </script>
 
 <template>
-    <!-- REMOVED min-h-full and min-w-full FROM DIALOG -->
     <dialog
         class="z-50 m-0 w-full h-full bg-transparent p-0"
         ref="dialog"
         @cancel="close"
     >
-        <!-- This is the main modal wrapper/container -->
         <div
             class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0 flex items-center justify-center"
             scroll-region
@@ -89,7 +87,6 @@ const maxWidthClass = computed(() => {
                 leave-from-class="opacity-100"
                 leave-to-class="opacity-0"
             >
-                <!-- Background Overlay -->
                 <div
                     v-show="show"
                     class="fixed inset-0 transform transition-all"
@@ -107,7 +104,6 @@ const maxWidthClass = computed(() => {
                 leave-from-class="opacity-100 translate-y-0 sm:scale-100"
                 leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-                <!-- Modal Content -->
                 <div
                     v-show="show"
                     class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full"

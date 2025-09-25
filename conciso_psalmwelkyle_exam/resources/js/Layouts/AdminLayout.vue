@@ -3,9 +3,7 @@ import { Link } from "@inertiajs/vue3";
 </script>
 
 <template>
-    <!-- Set the entire screen background to the light purple tint -->
     <div class="flex h-screen bg-[#8B3F93]/15 font-sans">
-        <!-- Sidebar: Has a white background and margin -->
         <aside class="w-64 bg-white m-4 rounded-xl flex flex-col shadow-lg">
             <div class="p-6">
                 <img
@@ -42,7 +40,7 @@ import { Link } from "@inertiajs/vue3";
                     <span class="font-medium">Products Management</span>
                 </Link>
                 <Link
-                    href="#"
+                    :href="route('admin.orders.index')"
                     class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
                     :class="{
                         'bg-[#8B3F93]/50 text-white hover:bg-[#8B3F93]/50':
@@ -144,7 +142,6 @@ import { Link } from "@inertiajs/vue3";
             </div>
         </aside>
 
-        <!-- Main Content: This area has no background, it is transparent, letting the root div's color show through -->
         <main class="flex-1 p-4 pr-8 pt-8 flex flex-col">
             <slot />
         </main>

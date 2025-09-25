@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
@@ -36,6 +38,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::resource('products', ProductController::class)->except(['show']);
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
 });
 
 
