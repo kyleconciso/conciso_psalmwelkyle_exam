@@ -40,7 +40,6 @@
     ```
 
 4.  **Migrate and seed the database**
-    This command builds the database schema and creates the default admin user and product samples.
     ```bash
     php artisan migrate:fresh --seed
     ```
