@@ -10,7 +10,6 @@ defineProps({
 const form = useForm({
     email: "",
     password: "",
-    remember: false,
 });
 
 const submit = () => {
@@ -99,27 +98,6 @@ const submit = () => {
                         />
                     </div>
                     <InputError class="mt-1" :message="form.errors.password" />
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <label class="flex items-center">
-                        <input
-                            type="checkbox"
-                            v-model="form.remember"
-                            class="rounded border-gray-300 text-[#8B3F93] shadow-sm focus:ring-[#8B3F93]"
-                        />
-                        <span class="ms-2 text-sm text-gray-600"
-                            >Remember me</span
-                        >
-                    </label>
-
-                    <Link
-                        v-if="canResetPassword"
-                        :href="route('password.request')"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Forgot your password?
-                    </Link>
                 </div>
 
                 <div class="flex justify-center pt-4">

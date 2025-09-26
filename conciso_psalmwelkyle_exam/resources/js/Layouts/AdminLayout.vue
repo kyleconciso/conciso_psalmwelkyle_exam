@@ -2,6 +2,7 @@
 import { Link } from "@inertiajs/vue3";
 import InboxIcon from "@/Components/Icons/InboxIcon.vue";
 import UsersIcon from "@/Components/Icons/UsersIcon.vue";
+import ToastNotification from "@/Components/ToastNotification.vue";
 </script>
 
 <template>
@@ -101,5 +102,7 @@ import UsersIcon from "@/Components/Icons/UsersIcon.vue";
         <main class="flex-1 p-8 flex flex-col ml-64 overflow-y-auto">
             <slot />
         </main>
+
+        <ToastNotification />
     </div>
 </template>

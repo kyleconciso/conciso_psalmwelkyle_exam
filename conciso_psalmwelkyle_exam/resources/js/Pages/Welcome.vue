@@ -4,25 +4,24 @@ import { ref, watch } from "vue";
 import { cart } from "@/cart.js";
 import CartModal from "@/Components/CartModal.vue";
 import ThankYouModal from "@/Components/ThankYouModal.vue";
-import Pagination from "@/Components/Pagination.vue"; // The new pagination component
-import { debounce } from "lodash"; // A utility to delay function execution
+import Pagination from "@/Components/Pagination.vue";
+import { debounce } from "lodash";
 
 const props = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
-    products: Object, // Products is now a paginator object { data, links, ... }
+    products: Object,
     auth: Object,
-    filters: Object, // The current search/sort filters from the backend
+    filters: Object,
 });
 
 const showCart = ref(false);
 const showThankYou = ref(false);
 
-// Reactive refs bound to the form inputs. Initialized with values from the backend.
 const searchTerm = ref(props.filters.search || "");
 const sortOrder = ref(props.filters.sort || "latest");
 
-// This watches for any changes to our search or sort refs.
+// Watches for any changes to our search or sort refs.
 // When they change, it sends a GET request to the backend with the new values.
 // `debounce` prevents sending a request on every single keystroke.
 watch(
@@ -35,8 +34,8 @@ watch(
                 sort: sortOrder.value,
             },
             {
-                preserveState: true, // Prevents losing focus on the search input
-                replace: true, // Avoids polluting browser history
+                preserveState: true,
+                replace: true,
             }
         );
     }, 300)

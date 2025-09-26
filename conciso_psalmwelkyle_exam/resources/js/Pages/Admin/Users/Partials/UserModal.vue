@@ -140,9 +140,6 @@ const closeModal = () => {
                             class="block text-sm font-medium text-gray-700 mb-1"
                             >Password</label
                         >
-                        <small v-if="isEditing" class="text-xs text-gray-500"
-                            >Leave blank to keep current password</small
-                        >
                         <div class="relative mt-1">
                             <span
                                 class="absolute inset-y-0 left-0 flex items-center pl-3"
