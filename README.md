@@ -22,6 +22,7 @@
     ```bash
     git clone https://github.com/kyleconciso/conciso_psalmwelkyle_exam
     cd conciso_psalmwelkyle_exam
+    cd conciso_psalmwelkyle_exam
     ```
 
 2.  **Install dependencies**
