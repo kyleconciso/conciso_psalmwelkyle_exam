@@ -20,8 +20,8 @@
 1.  **Clone the repository**
 
     ```bash
-    git clone <repository-url>
-    cd <project-folder>
+    git clone https://github.com/kyleconciso/conciso_psalmwelkyle_exam
+    cd conciso_psalmwelkyle_exam
     ```
 
 2.  **Install dependencies**
