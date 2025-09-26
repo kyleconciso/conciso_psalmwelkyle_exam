@@ -40,7 +40,13 @@
     touch database/database.sqlite
     ```
 
-4.  **Migrate and seed the database**
+4.  **Create storage symlink**
+
+    ```bash
+    php artisan storage:link
+    ```
+
+5.  **Migrate and seed the database**
     ```bash
     php artisan migrate:fresh --seed
     ```
